@@ -14,45 +14,19 @@ export default function Visualization({data}){
 
     const colors = {
         'Green': {
-            opacity: 0.8,
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-                offset: 0,
-                color: 'rgb(255, 191, 0)'
-          },
-          {
-            offset: 1,
-            color: 'rgb(224, 62, 76)'
-          }
-        ])
+            1: 'rgb(255, 191, 0)',
+            2: 'rgb(224, 62, 76)'
         },
-        "Red": {
-            opacity: 0.8,
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {
-            offset: 0,
-            color: 'rgb(255 0 0)'
-          },
-          {
-            offset: 1,
-            color: 'rgb(219 97 14)'
-          }
-        ])
+        'Red': {
+            1: 'rgb(255, 0, 0)',
+            2: 'rgb(219, 97, 14)'
         },
         "Orange": {
-            opacity: 0.8,
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                    offset: 0,
-                    color: 'rgb(128, 255, 165)'
-                },
-                {
-                    offset: 1,
-                    color: 'rgb(1, 191, 236)'
-                }
-                ])
+            1: 'rgb(128, 255, 165)',
+            2: 'rgb(1, 191, 236)'
         }
     }
+
 
     const series = legend?.map((name, index) => {
         return {
@@ -65,7 +39,17 @@ export default function Visualization({data}){
             },
             showSymbol: false,
             areaStyle: {
-                ...colors[name]
+                opacity: 0.8,
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                    offset: 0,
+                    color: colors[name][1]
+                },
+                {
+                    offset: 1,
+                    color: colors[name][2]
+                }
+                ])
             },
             emphasis: {
                 focus: 'series'
@@ -77,7 +61,7 @@ export default function Visualization({data}){
     console.log(series);
 
     const echartOptions = {
-        color: ['orange', 'red', 'green', '#FF0087', '#FFBF00'],
+        color: ['orange', 'red', 'green'],
         title: {
             text: 'Gradient Stacked Area Chart'
         },
@@ -92,11 +76,6 @@ export default function Visualization({data}){
         },
         legend: {
             data: ['Orange', 'Red', 'Green']
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
         },
         grid: {
             left: '3%',
@@ -118,10 +97,11 @@ export default function Visualization({data}){
     }
 
     console.log(echartOptions);
+    console.log(Object.keys(data || {})?.length, "-----------------");
 
     return (
         <Box marginTop={"1rem"}>
-            <ReactECharts option={echartOptions} />
+            {Object.keys(data || {})?.length > 0 && (<ReactECharts option={echartOptions} />)}
         </Box>
     );
 
